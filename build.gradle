@@ -1,0 +1,62 @@
+plugins {
+	id 'java'
+	id 'maven-publish'
+}
+
+subprojects {
+	apply plugin: 'java-library'
+	apply plugin: 'maven-publish'
+
+	group 'me.pixeldev.alya'
+	version '1.4.3-SNAPSHOT'
+
+	java {
+		toolchain {
+			languageVersion.set(JavaLanguageVersion.of(8))
+		}
+	}
+
+	publishing {
+		repositories {
+			maven {
+				def snapshot = version.toString().endsWith("-SNAPSHOT")
+				def typeName = snapshot ? 'snapshots' : 'releases'
+				def repoUrl = 'https://repo.unnamed.team/repository/unnamed-' + typeName
+
+				name = snapshot ? 'unnamed-snapshots' : 'unnamed-releases'
+				url = repoUrl
+				credentials {
+					username = System.getenv('REPO_USER')
+					password = System.getenv('REPO_PASSWORD')
+				}
+			}
+			publications {
+				maven(MavenPublication) {
+					from components.java
+				}
+			}
+		}
+
+//    For install the project into ur .m2
+//
+//    publications {
+//      mavenJava(MavenPublication) {
+//        from components.java
+//      }
+//    }
+	}
+
+	repositories {
+		mavenLocal()
+
+		maven { url 'https://repo.unnamed.team/repository/unnamed-public/' }
+		maven { url 'https://repo.codemc.io/repository/nms/' }
+		maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+
+		mavenCentral()
+	}
+
+	compileJava {
+		options.compilerArgs << "-parameters"
+	}
+}

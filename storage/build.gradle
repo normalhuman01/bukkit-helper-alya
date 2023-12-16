@@ -1,0 +1,6 @@
+subprojects {
+	dependencies {
+		api project(':jdk')
+		compileOnly 'me.yushust.inject:core:0.4.5-SNAPSHOT'
+	}
+}

@@ -1,0 +1,13 @@
+rootProject.name = 'alya'
+
+['bukkit', 'bukkit-abstraction', 'jdk', 'api', 'bungeecord'].forEach {
+	include it
+}
+
+['v1_8_R3', 'v1_16_R3', 'v1_17_R1', 'v1_18_R1', 'v1_18_R2'].forEach {
+	include "versions:${it}"
+}
+
+['universal', 'gson', 'sql'].forEach {
+	include "storage:${it}"
+}
